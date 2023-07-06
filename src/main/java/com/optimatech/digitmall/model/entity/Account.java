@@ -29,6 +29,7 @@ public class Account  {
     private Enable enable;
     private LocalDateTime created;
     private String email;
+    @Column(name = "phonenumber")
     private String phoneNumber;
 
 }
