@@ -16,7 +16,10 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
+
 @Table(name="account")
+
 public class Account  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +29,6 @@ public class Account  {
     private Enable enable;
     private LocalDateTime created;
     private String email;
-    private String phonenumber;
+    private String phoneNumber;
 
 }
