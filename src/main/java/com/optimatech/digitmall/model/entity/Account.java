@@ -1,5 +1,6 @@
 package com.optimatech.digitmall.model.entity;
 
+
 import com.optimatech.digitmall.Enum.Enable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,8 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.annotation.processing.Generated;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -23,7 +24,7 @@ public class Account  {
     private String username;
     private String password;
     private Enable enable;
-    private Date created;
+    private LocalDateTime created;
     private String email;
     private String phonenumber;
 
