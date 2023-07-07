@@ -18,14 +18,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     private final AccountService accountService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthController( AccountService accountService, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.accountService = accountService;
+    public AuthController(JwtService jwtService, AuthenticationManager authenticationManager, AccountService accountService) {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+
+        this.accountService = accountService;
     }
 
     @PostMapping("/register")

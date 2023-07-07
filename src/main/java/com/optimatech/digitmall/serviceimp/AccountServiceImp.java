@@ -4,15 +4,19 @@ import com.optimatech.digitmall.model.dto.Registerdto;
 import com.optimatech.digitmall.model.entity.Account;
 import com.optimatech.digitmall.repository.AccountRepository;
 import com.optimatech.digitmall.services.AccountService;
+import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 
-public class AccountServiceImp extends AccountService {
-    private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
+@Getter
+@Setter
+@NoArgsConstructor
+public class AccountServiceImp  extends AccountService {
+    private  AccountRepository accountRepository;
+    private  PasswordEncoder passwordEncoder;
 
     public AccountServiceImp(AccountRepository accountRepository,PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;

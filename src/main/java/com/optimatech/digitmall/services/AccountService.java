@@ -9,6 +9,7 @@ public abstract class AccountService {
 
     public abstract UserDetails loginAccount(String username);
 
+
     public abstract Account registerAccount(Registerdto registerdto);
 
     public abstract UserDetails loadUserByUsername(String username);

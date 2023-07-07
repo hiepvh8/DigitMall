@@ -1,6 +1,8 @@
 package com.optimatech.digitmall.config;
 
 import com.optimatech.digitmall.repository.AccountRepository;
+import com.optimatech.digitmall.serviceimp.AccountServiceImp;
+import com.optimatech.digitmall.services.AccountService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,5 +43,9 @@ public class AppConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
+    @Bean
+    public AccountService dt(){ return new AccountServiceImp();}
 
 }
