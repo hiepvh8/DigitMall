@@ -1,6 +1,8 @@
 package com.optimatech.digitmall.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.optimatech.digitmall.Enum.Rankk;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -35,5 +38,30 @@ public class Customer {
     private Rankk rankk;
     private String coin;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "accoutid", referencedColumnName = "id")
+    @JsonManagedReference
+    private Account account;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Seller seller;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cartid", referencedColumnName = "id")
+    @JsonManagedReference
+    private Cart cart;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Address> addressList;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Bill> bills;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Comment> comments;
 
 }
