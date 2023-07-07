@@ -16,6 +16,8 @@ import java.util.List;
 @OpenAPIDefinition
 @Configuration
 public class OpenAPIConfig {
+
+    //link docs:   http://localhost:6789/swagger-ui/index.html#/
     @Value("${optimatech.openapi.dev-url}")
     private String devUrl;
 
