@@ -1,6 +1,5 @@
 package com.optimatech.digitmall.model.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,18 +10,22 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "industry")
-public class Industry {
+@Table(name = "manufactureaddress")
+public class ManufactureAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "industryname")
-    private String industryName;
-    @OneToMany(mappedBy = "industry", cascade = CascadeType.ALL)
+    @Column(name = "name")
+    private String name;
+
+    private String shortname;
+
+    @OneToMany(mappedBy = "manufactureaddress", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Product> product;
 }
+
