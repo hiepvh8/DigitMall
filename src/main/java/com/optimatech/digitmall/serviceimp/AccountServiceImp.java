@@ -7,6 +7,7 @@ import com.optimatech.digitmall.model.entity.Customer;
 import com.optimatech.digitmall.repository.AccountRepository;
 import com.optimatech.digitmall.repository.CustomerRepository;
 import com.optimatech.digitmall.services.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
