@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 
-
 @Entity
 @Getter
 @Setter
@@ -77,7 +76,7 @@ public class Account  implements UserDetails {
     }
 
 
-    public Account(SignUp accountRequest) {
+    public Account(SignUp accountRequest){
         this.username = accountRequest.getUsername();
         this.password = accountRequest.getPassword();
         this.enable = Enable.INACTIVE;
