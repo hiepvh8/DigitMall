@@ -55,6 +55,17 @@ public class Product {
     @JsonBackReference
     private Trademark trademark;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "industryid", referencedColumnName = "id")
+    @JsonBackReference
+    private Industry industry;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "manufactureaddressid", referencedColumnName = "id")
+    @JsonBackReference
+    private ManufactureAddress manufactureaddress;
+
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Image> images;
@@ -65,7 +76,5 @@ public class Product {
     @JsonManagedReference
 
     private List<Cart> cart;
-
-
 
 }

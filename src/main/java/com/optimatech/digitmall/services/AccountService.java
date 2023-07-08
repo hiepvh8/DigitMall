@@ -1,4 +1,4 @@
 package com.optimatech.digitmall.services;
 
-public class AccountService {
+public interface AccountService {
 }
