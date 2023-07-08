@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Customer {
 
     @Id
@@ -45,12 +45,12 @@ public class Customer {
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonBackReference
-    private Seller seller;
+    private Seller seller; // + chức năng tạo mới kênh người bán
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cartid", referencedColumnName = "id")
     @JsonManagedReference
-    private Cart cart;
+    private Cart cart; // + chức năng tạo mới 1 giỏ hàng
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -63,5 +63,15 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Comment> comments;
+
+
+    public Customer(){
+        this.avatarImg = "https://res.cloudinary.com/dxlgrtrvr/image/upload/v1688734142/hinh-avatar-anh-dai-dien-FB-mac-dinh_pmvfhf.webp";
+        this.backGroundImg = "https://res.cloudinary.com/dxlgrtrvr/image/upload/v1678860084/brgoud_nritsk.jpg";
+        this.firstname = "Hello";
+        this.lastname = "New Customer";
+        this.coin = "50000";
+        this.rankk = Rankk.BRONZE;
+    }
 
 }
