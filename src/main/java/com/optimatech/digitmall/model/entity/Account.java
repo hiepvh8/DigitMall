@@ -13,8 +13,11 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
+
 import java.time.LocalDateTime;
 import java.util.Collection;
+
 
 
 @Entity
@@ -74,7 +77,7 @@ public class Account  implements UserDetails {
     }
 
 
-    public Account(SignUp accountRequest){
+    public Account(SignUp accountRequest) {
         this.username = accountRequest.getUsername();
         this.password = accountRequest.getPassword();
         this.enable = Enable.INACTIVE;
@@ -83,3 +86,4 @@ public class Account  implements UserDetails {
         this.email = accountRequest.getEmail();
     }
 }
+
