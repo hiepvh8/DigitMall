@@ -23,7 +23,7 @@ public class Address {
     private String wards; // xã/phường/ thị trấn
     private String details; // địa chỉ chi tiết số nhà,ngõ,ngách,đường,....
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne //  xóa 1 address thì customer không bị xóa theo
     @JoinColumn(name = "customerid", referencedColumnName = "id")
     @JsonBackReference
     private Customer customer;

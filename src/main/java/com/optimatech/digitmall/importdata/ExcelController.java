@@ -5,6 +5,8 @@ import com.optimatech.digitmall.repository.CountryRepository;
 import com.optimatech.digitmall.repository.DistrictRepository;
 import com.optimatech.digitmall.repository.WardsRepository;
 import com.optimatech.digitmall.respone.Response;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("")
+@Tag(name = "Demo Import Data with Excel File", description = "Không cần quan tâm cái này đâu!")
 public class ExcelController {
     private final CountryRepository countryRepository;
     private final DistrictRepository districtRepository;
@@ -233,10 +236,13 @@ public class ExcelController {
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
+    @Operation(summary = "Call thử để lấy ra tất cả huyện xã phường thị trấn của một tỉnh",
+                description = "VD: Hà Nam(23) Bắc Ninh(18) Hà Nội(1) ....")
     @GetMapping("/get-country/{country-id}")
-    public ResponseEntity<?> getAddressById(@PathVariable("country-id") Long id){
+    public ResponseEntity<?> getCountryById(@PathVariable("country-id") Long id){
         return new ResponseEntity<>(countryRepository.findById(id),HttpStatus.OK);
     }
+
 
 
 

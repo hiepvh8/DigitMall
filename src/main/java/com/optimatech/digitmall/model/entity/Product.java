@@ -36,7 +36,7 @@ public class Product {
     private String disscount; // phần trăm giảm giá
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "sellerid", referencedColumnName = "id")
     @JsonBackReference
     private Seller seller;
@@ -45,22 +45,22 @@ public class Product {
     @JsonManagedReference
     private List<Comment> comments;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "categoryid", referencedColumnName = "id")
     @JsonBackReference
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "trademarkid", referencedColumnName = "id")
     @JsonBackReference
     private Trademark trademark;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "industryid", referencedColumnName = "id")
     @JsonBackReference
     private Industry industry;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "manufactureaddressid", referencedColumnName = "id")
     @JsonBackReference
     private ManufactureAddress manufactureaddress;

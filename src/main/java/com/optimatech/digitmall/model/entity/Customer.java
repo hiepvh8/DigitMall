@@ -52,7 +52,7 @@ public class Customer {
     @JsonManagedReference
     private Cart cart; // + chức năng tạo mới 1 giỏ hàng
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL) // xóa customer là xóa all list
     @JsonManagedReference
     private List<Address> addressList;
 

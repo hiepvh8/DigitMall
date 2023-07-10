@@ -30,11 +30,11 @@ public class Voucher {
     @Column(name = "maximumfreeship")
     private String maximumFreeShip; // tiền giảm tối đa khi dùng free ship
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "categoryid", referencedColumnName = "id")
     @JsonBackReference
     private Category category; // ngành hàng được phép áp voucher
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "trademarkid", referencedColumnName = "id")
     @JsonBackReference
     private Trademark trademark; // thương hiệu được áp voucher
