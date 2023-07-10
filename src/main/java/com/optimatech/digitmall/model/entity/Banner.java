@@ -18,7 +18,8 @@ public class Banner {
     private LocalDateTime start;
     private LocalDateTime end;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne // xóa 1 banner không ảnh hưởng đến seller , seller bị xóa sẽ kéo theo customer bị xóa
+            // và mây mây thứ nữa sẽ bị xóa theo. nếu dùng case.TYPE_ALL ở đây thì câu chuyện sẽ rất tệ
     @JoinColumn(name = "sellerid", referencedColumnName = "id")
     @JsonBackReference
     private Seller seller;

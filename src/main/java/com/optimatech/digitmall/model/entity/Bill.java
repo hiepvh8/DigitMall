@@ -40,7 +40,7 @@ public class Bill {
     @Column(name = "realmoney")
     private String realMoney; // giá tiền thực sự phải trả
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "customerid", referencedColumnName = "id")
     @JsonBackReference
     private Customer customer;

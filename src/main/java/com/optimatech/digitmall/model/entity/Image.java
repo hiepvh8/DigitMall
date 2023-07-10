@@ -14,7 +14,7 @@ public class Image {
     @Enumerated(EnumType.STRING)
     private TypeImage type;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "productid", referencedColumnName = "id")
     @JsonBackReference
     private Product product;

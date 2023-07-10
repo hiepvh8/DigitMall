@@ -25,7 +25,7 @@ public class Cart {
     @JsonBackReference
     private List<Product> products;
 
-    @OneToOne(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "cart")
     @JsonBackReference
     private Customer customer;
 

@@ -11,7 +11,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "sendbycustid", referencedColumnName = "id")
     @JsonBackReference
     private Customer customer;
@@ -19,7 +19,7 @@ public class Comment {
     @Column(name = "timeat")
     private LocalDateTime timeAt;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "productid", referencedColumnName = "id")
     @JsonBackReference
     private Product product;

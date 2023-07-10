@@ -33,7 +33,7 @@ public class Seller {
     // chỗ này là chỗ của địa chỉ shop
     // tạm thời trống
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "cusid", referencedColumnName = "id")
     @JsonManagedReference
     private Customer customer;
