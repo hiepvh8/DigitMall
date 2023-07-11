@@ -35,6 +35,13 @@ public class Product {
     private Business status ; // trạng thái kinh doanh của sản phẩm
     private String disscount; // phần trăm giảm giá
 
+    @OneToOne(mappedBy = "product")
+    @JsonBackReference
+    private Video video;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Hashtag> hashtags;
 
     @ManyToOne
     @JoinColumn(name = "sellerid", referencedColumnName = "id")

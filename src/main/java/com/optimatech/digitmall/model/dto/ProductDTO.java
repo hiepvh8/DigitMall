@@ -1,5 +1,6 @@
 package com.optimatech.digitmall.model.dto;
 
+import com.optimatech.digitmall.Enum.Business;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,9 @@ public class ProductDTO {
     private Long industryId;
     private Long trademarkId;
     private Long manufactureAddressId;
+    private Long sellerId;
     private String introduce;
+    private Business status;
+    private Boolean advertisement;
 }
 
