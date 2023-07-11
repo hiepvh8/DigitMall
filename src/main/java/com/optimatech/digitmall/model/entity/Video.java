@@ -1,6 +1,7 @@
 package com.optimatech.digitmall.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,17 +13,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "hashtag")
-public class Hashtag {
+@Table(name = "videos")
+public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "hashtagname")
-    private String hashtagName;
+    @Column(name = "url")
+    private String url;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "productid", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonManagedReference
     private Product product;
 }
+

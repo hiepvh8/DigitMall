@@ -10,8 +10,10 @@ import java.util.Optional;
 public interface ProductService {
     public List<Product> getAllProducts();
     public Optional<Product> getProductById(Long id);
-    public Product updateProduct(Product product);
-    public void deleteProduct(Long id);
     public boolean isProductCodeExists(String productCode);
+
     public void createProduct(ProductDTO productDTO);
+
+    //update product
+    void updateProduct(Long productId, ProductDTO productDTO);
 }
