@@ -19,4 +19,9 @@ public class Image {
     @JsonBackReference
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "commentid", referencedColumnName = "id")
+    @JsonBackReference
+    private Comment comment;
+
 }

@@ -35,7 +35,7 @@ public class Product {
     private Business status ; // trạng thái kinh doanh của sản phẩm
     private String disscount; // phần trăm giảm giá
 
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonBackReference
     private Video video;
 

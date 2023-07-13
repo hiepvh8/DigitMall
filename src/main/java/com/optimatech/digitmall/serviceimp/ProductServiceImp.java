@@ -50,23 +50,8 @@ public class ProductServiceImp implements ProductService {
         this.sellerService = sellerService;
     }
 
-
-    //Return list product
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    //Return product by id
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
-    }
-
-    public boolean isProductCodeExists(String productCode) {
-        // Truy vấn cơ sở dữ liệu để kiểm tra xem có sản phẩm nào có mã productCode tồn tại hay không
-        Optional<Product> product = Optional.ofNullable(productRepository.findByProductCode(productCode));
-        return product.isPresent();
-    }
-
+    //C
+    //Create Product
     @Override
     public void createProduct(ProductDTO productDTO){
         // Kiểm tra xem categoryId có hợp lệ hay không
@@ -127,6 +112,38 @@ public class ProductServiceImp implements ProductService {
         }
     }
 
+    //Kiểm tra tồn tại của product
+    public boolean isProductCodeExists(String productCode) {
+        // Truy vấn cơ sở dữ liệu để kiểm tra xem có sản phẩm nào có mã productCode tồn tại hay không
+        Optional<Product> product = Optional.ofNullable(productRepository.findByProductCode(productCode));
+        return product.isPresent();
+    }
+
+    //R
+    //Return list product
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    //Lấy ra top 100 sản phẩm có lượng sold cao nhất và có trạng thái ONL
+    public List<Product> getTopSoldProducts() {
+        return productRepository.findTop100OnlineProductsBySold();
+    }
+
+    //Return product by id
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
+
+
+//    public List<Product> getFlassaleProducts(double discountPercentage) {
+//        String discountPercentageStr = String.valueOf(discountPercentage);
+//        return productRepository.findAllByDisscountGreaterThan(discountPercentageStr);
+//    }
+
+
+    //D
     //update product
     @Override
     public void updateProduct(Long productId, ProductDTO productDTO){
@@ -178,12 +195,33 @@ public class ProductServiceImp implements ProductService {
             product.setIndustry(industry.orElse(null));
             product.setTrademark(trademark.orElse(null));
             product.setManufactureaddress(manufactureAddress.orElse(null));
-            product.setSeller(seller.orElse(null));
             product.setIntroduct(productDTO.getIntroduce());
-            product.setStatus(productDTO.getStatus());
             product.setAdvertisement(productDTO.getAdvertisement());
             // Lưu sản phẩm đã cập nhật vào cơ sở dữ liệu
             productRepository.save(product);
+        }
+    }
+    //Update business product by id
+    public void updateProductByIdWithBusiness(Long productId, ProductDTO productDTO){
+        // Kiểm tra xem sản phẩm có tồn tại dựa trên ID hay không
+        Optional<Product> existingProduct = productRepository.findById(productId);
+        if (!existingProduct.isPresent()) {
+            //throw new RuntimeException("Không tìm thấy sản phẩm với ID: " + productId);
+        }
+        if(existingProduct.isPresent()){
+            Product product = existingProduct.get();
+            product.setStatus(productDTO.getStatus());
+            // Lưu sản phẩm đã cập nhật vào cơ sở dữ liệu
+            productRepository.save(product);
+        }
+    }
+
+    //D
+    //Delete product by id
+    public void deleteProductById(Long productId) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            productRepository.deleteById(productId);
         }
     }
 }
