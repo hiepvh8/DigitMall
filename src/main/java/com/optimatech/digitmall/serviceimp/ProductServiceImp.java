@@ -8,6 +8,8 @@ import com.optimatech.digitmall.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,6 +95,7 @@ public class ProductServiceImp implements ProductService {
                 Product product = new Product();
                 product.setProductName(productDTO.getProductName());
                 product.setProductCode(productDTO.getProductCode());
+                product.setDate(LocalDateTime.now());
                 product.setPrice(productDTO.getPrice());
                 product.setDisscount(productDTO.getDisscount());
                 product.setQuantity(productDTO.getQuantity());
@@ -105,7 +108,7 @@ public class ProductServiceImp implements ProductService {
                 product.setSold("0");
                 product.setAdvertisement(false);
                 product.setAttention("0");
-                product.setStatus(productDTO.getStatus());
+                product.setStatus(Business.ONL);
                 // Lưu sản phẩm vào cơ sở dữ liệu
                 productRepository.save(product);
             }
@@ -128,6 +131,12 @@ public class ProductServiceImp implements ProductService {
     //Lấy ra top 100 sản phẩm có lượng sold cao nhất và có trạng thái ONL
     public List<Product> getTopSoldProducts() {
         return productRepository.findTop100OnlineProductsBySold();
+    }
+
+    //Lấy ra sản phẩm mới thm từ 3 ngày gần đây
+    public List<Product> getNewlyAddedProducts() {
+        LocalDateTime startDate = LocalDateTime.now().minus(3, ChronoUnit.DAYS);
+        return productRepository.findNewlyAddedProducts(startDate);
     }
 
     //Return product by id
@@ -196,13 +205,12 @@ public class ProductServiceImp implements ProductService {
             product.setTrademark(trademark.orElse(null));
             product.setManufactureaddress(manufactureAddress.orElse(null));
             product.setIntroduct(productDTO.getIntroduce());
-            product.setAdvertisement(productDTO.getAdvertisement());
             // Lưu sản phẩm đã cập nhật vào cơ sở dữ liệu
             productRepository.save(product);
         }
     }
     //Update business product by id
-    public void updateProductByIdWithBusiness(Long productId, ProductDTO productDTO){
+    public void updateProductByIdWithStatus(Long productId, Business status){
         // Kiểm tra xem sản phẩm có tồn tại dựa trên ID hay không
         Optional<Product> existingProduct = productRepository.findById(productId);
         if (!existingProduct.isPresent()) {
@@ -210,7 +218,22 @@ public class ProductServiceImp implements ProductService {
         }
         if(existingProduct.isPresent()){
             Product product = existingProduct.get();
-            product.setStatus(productDTO.getStatus());
+            product.setStatus(status);
+            // Lưu sản phẩm đã cập nhật vào cơ sở dữ liệu
+            productRepository.save(product);
+        }
+    }
+
+    //Update status product by id
+    public void updateProductByIdWithAdvertisement(Long productId, Boolean advertisement){
+        // Kiểm tra xem sản phẩm có tồn tại dựa trên ID hay không
+        Optional<Product> existingProduct = productRepository.findById(productId);
+        if (!existingProduct.isPresent()) {
+            //throw new RuntimeException("Không tìm thấy sản phẩm với ID: " + productId);
+        }
+        if(existingProduct.isPresent()){
+            Product product = existingProduct.get();
+            product.setAdvertisement(advertisement);
             // Lưu sản phẩm đã cập nhật vào cơ sở dữ liệu
             productRepository.save(product);
         }

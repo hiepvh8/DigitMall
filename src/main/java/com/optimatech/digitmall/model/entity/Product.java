@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.optimatech.digitmall.Enum.Business;
 import jakarta.persistence.*;
+import jxl.write.DateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -25,6 +27,7 @@ public class Product {
     private String productName;
     @Column(name = "productcode")
     private String productCode;
+    private LocalDateTime date; //ngày nhập sản phẩm
     private String quantity; // số lượng hàng trong kho
     private String sold; // số lượng hàng đã bán
     private String price; // giá bán

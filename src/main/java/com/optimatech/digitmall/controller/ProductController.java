@@ -1,5 +1,6 @@
 package com.optimatech.digitmall.controller;
 
+import com.optimatech.digitmall.Enum.Business;
 import com.optimatech.digitmall.model.dto.ProductDTO;
 import com.optimatech.digitmall.model.entity.*;
 import com.optimatech.digitmall.services.*;
@@ -77,6 +78,23 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @Operation(
+            summary = "client gửi request GetMethod để trả về danh sách Sản phẩm vừa được thêm vào shop trong 3 ngày gần nhất trong hệ thống",
+            description = "Dùng để hiện thị danh sách sản phẩm có lượt bán cao nhất "
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400",description = "bad request"),
+            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
+            @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
+    })
+    //Trả về sản phẩm vừa được thêm 3 ngày gần nhất
+    public ResponseEntity<?> getAllProductsLast3Days(){
+        List<Product> products = productService.getNewlyAddedProducts();
+        return ResponseEntity.ok(products);
+    }
+
 //    @GetMapping("/flassale")
 //    public ResponseEntity<List<Product>> getFlassaleProducts(@RequestParam(required = false, defaultValue = "0.3") double disscountPercentage) {
 //        List<Product> products = productService.getFlassaleProducts(disscountPercentage);
@@ -96,7 +114,7 @@ public class ProductController {
     })
 
     //register product
-    @PostMapping("/register")
+    @PostMapping("/create")
     public ResponseEntity<? > createProduct(@RequestBody ProductDTO productDTO){
         productService.createProduct(productDTO);
         return new ResponseEntity<>("Thêm thành công!", HttpStatus.CREATED);
@@ -104,7 +122,7 @@ public class ProductController {
 
     @Operation(
             summary = " Client gủi PutMethod yêu cầu chỉnh sửa sản phẩm ",
-            description = "Seller có thể chỉnh sửa sản phẩm theo id của mình, seller sẽ có danh sách các sản phẩm trong shope của mình, mỗi sản phẩm có phần edit với from frontend thiết kế "
+            description = "Seller có thể chỉnh sửa sản phẩm theo id của mình, seller sẽ có danh sách các sản phẩm trong shope của mình, mỗi sản phẩm có phần edit với from frontend thiết kế."
     )
 
     @ApiResponses({
@@ -126,7 +144,7 @@ public class ProductController {
     }
 
     @Operation(
-            summary = " Client gủi PutMethod yêu cầu cập nhật trạng thái sản phẩm ",
+            summary = " Client gủi PutMethod yêu cầu cập nhật trạng thái Quảng cáo sản phẩm ",
             description = "Seller có thể câp nhật trạng thái sản phẩm ONL, OFF "
     )
 
@@ -136,11 +154,33 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
             @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
     })
-    //Update product by id with Business
-    @PutMapping("/update/Business/{productId}")
-    public ResponseEntity<String> updateProductByIdWithBusiness(@PathVariable Long productId, @RequestBody ProductDTO productDTO) {
+    //Update product by id with Advertisement
+    @PutMapping("/update/advertisement/{productId}")
+    public ResponseEntity<String> updateProductByIdWithAdvertisement(@PathVariable Long productId, @RequestBody Boolean advertisement) {
         try {
-            productService.updateProductByIdWithBusiness(productId, productDTO);
+            productService.updateProductByIdWithAdvertisement(productId, advertisement);
+            return ResponseEntity.ok("Sản phẩm đã được set trạng thái ");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi cập nhật sản phẩm: " + e.getMessage());
+        }
+    }
+
+    @Operation(
+            summary = " Client gủi PutMethod yêu cầu cập nhật trạng thái ONL,OFF sản phẩm đang kinh doanh hoặc đã hoãn kih doanh ",
+            description = "Seller có thể câp nhật trạng thái sản phẩm ONL, OFF "
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400",description = "bad request"),
+            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
+            @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
+    })
+    //Update product by id with Status
+    @PutMapping("/update/status/{productId}")
+    public ResponseEntity<String> updateProductByIdWithStatus(@PathVariable Long productId, @RequestBody Business status) {
+        try {
+            productService.updateProductByIdWithStatus(productId, status);
             return ResponseEntity.ok("Sản phẩm đã được set trạng thái ");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi cập nhật sản phẩm: " + e.getMessage());
