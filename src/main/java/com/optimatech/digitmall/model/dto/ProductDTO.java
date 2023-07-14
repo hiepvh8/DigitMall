@@ -22,7 +22,7 @@ public class ProductDTO {
     private Long manufactureAddressId;
     private Long sellerId;
     private String introduce;
-    private Business status;
-    private Boolean advertisement;
+    //private Business status;
+    //private Boolean advertisement;
 }
 
