@@ -14,7 +14,15 @@ public interface ProductService {
     public List<Product> getAllProducts();
     public List<Product> getTopSoldProducts();
 //    public List<Product> getFlassaleProducts(double discountPercentage);
+
+    //Danh sách sản phẩm mới về 3 ngày gần nhất
     public List<Product> getNewlyAddedProducts();
+
+    // Tìm kiếm sản phẩm theo keyword
+    public List<Product> searchProducts(String keyword);
+
+    //So sanh san phẩm
+    public List<String> compareProducts(List<Long> productIds);
     public Optional<Product> getProductById(Long id);
 
 

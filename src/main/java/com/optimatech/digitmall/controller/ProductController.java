@@ -90,11 +90,52 @@ public class ProductController {
             @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
     })
     //Trả về sản phẩm vừa được thêm 3 ngày gần nhất
+    @GetMapping("/new")
     public ResponseEntity<?> getAllProductsLast3Days(){
         List<Product> products = productService.getNewlyAddedProducts();
         return ResponseEntity.ok(products);
     }
 
+    @Operation(
+            summary = "client gửi request PostMethod để trả về danh sách Sản phẩm vừa được thêm vào để so sánh",
+            description = " Json để test là [\n" +
+                    "            16,\n" +
+                    "            17,\n" +
+                    "            18\n" +
+                    "            ] nếu lỗi thay id khác có trong db"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400",description = "bad request"),
+            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
+            @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
+    })
+    //Trả về những sản phẩm đem ra so sánh
+
+    @PostMapping("/compare")
+    public ResponseEntity<List<String>> compareProducts(@RequestBody List<Long> productIds) {
+        List<String> comparisonResults = productService.compareProducts(productIds);
+        return ResponseEntity.ok(comparisonResults);
+    }
+
+    @Operation(
+            summary = "client gửi request GetMethod để tìm kiêm sản phẩm theo keyword truyền vào ",
+            description = ""
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400",description = "bad request"),
+            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
+            @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
+    })
+    //Tìm kiếm sản phẩm theo keyword
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam("keyword") String keyword) {
+        List<Product> products = productService.searchProducts(keyword);
+        return ResponseEntity.ok(products);
+    }
 //    @GetMapping("/flassale")
 //    public ResponseEntity<List<Product>> getFlassaleProducts(@RequestParam(required = false, defaultValue = "0.3") double disscountPercentage) {
 //        List<Product> products = productService.getFlassaleProducts(disscountPercentage);

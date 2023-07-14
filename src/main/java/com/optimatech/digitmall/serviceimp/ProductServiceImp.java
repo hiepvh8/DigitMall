@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,8 @@ public class ProductServiceImp implements ProductService {
     @Autowired
     private final SellerRepository sellerRepository;
     @Autowired
+    private final KeywordRepository keywordRepository;
+    @Autowired
     private final CategoryService categoryService;
     @Autowired
     private final IndustryService industryService;
@@ -38,13 +41,14 @@ public class ProductServiceImp implements ProductService {
     @Autowired
     private final SellerService sellerService;
 
-    public ProductServiceImp(ProductRepository productRepository, CategoryRepository categoryRepository, IndustryRepository industryRepository, TrademarkRepository trademarkRepository, ManufactureAddressRepository manufactureAddressRepository, SellerRepository sellerRepository, CategoryService categoryService, IndustryService industryService, TrademarkService trademarkService, ManufactureAddressService manufactureAddressService, SellerService sellerService) {
+    public ProductServiceImp(ProductRepository productRepository, CategoryRepository categoryRepository, IndustryRepository industryRepository, TrademarkRepository trademarkRepository, ManufactureAddressRepository manufactureAddressRepository, SellerRepository sellerRepository, KeywordRepository keywordRepository, CategoryService categoryService, IndustryService industryService, TrademarkService trademarkService, ManufactureAddressService manufactureAddressService, SellerService sellerService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.industryRepository = industryRepository;
         this.trademarkRepository = trademarkRepository;
         this.manufactureAddressRepository = manufactureAddressRepository;
         this.sellerRepository = sellerRepository;
+        this.keywordRepository = keywordRepository;
         this.categoryService = categoryService;
         this.industryService = industryService;
         this.trademarkService = trademarkService;
@@ -139,10 +143,96 @@ public class ProductServiceImp implements ProductService {
         return productRepository.findNewlyAddedProducts(startDate);
     }
 
+    public List<String> compareProducts(List<Long> productIds) {
+        List<Product> products = productRepository.findAllById(productIds);
+
+        List<String> comparisonResults = new ArrayList<>();
+        for (Product product : products) {
+            String comparisonResult = buildComparisonResult(product);
+            comparisonResults.add(comparisonResult);
+        }
+
+        return comparisonResults;
+    }
+    private String buildComparisonResult(Product product) {
+        StringBuilder resultBuilder = new StringBuilder();
+        resultBuilder.append("Product Name: ").append(product.getProductName()).append("\n");
+        resultBuilder.append("Product Code: ").append(product.getProductCode()).append("\n");
+        resultBuilder.append("Date: ").append(product.getDate()).append("\n");
+        resultBuilder.append("Sold: ").append(product.getSold()).append("\n");
+        resultBuilder.append("Price: ").append(product.getPrice()).append("\n");
+        resultBuilder.append("Introduction: ").append(product.getIntroduct()).append("\n");
+        resultBuilder.append("Discount: ").append(product.getDisscount()).append("\n");
+
+        // Lấy tên của Seller từ sellerid
+        String sellerName = product.getSeller().getShopName();
+        resultBuilder.append("Seller: ").append(sellerName).append("\n");
+
+        // Lấy tên của Trademark từ trademarkid
+        String trademarkName = product.getTrademark().getTrademarkName();
+        resultBuilder.append("Trademark: ").append(trademarkName).append("\n");
+
+        // Lấy tên của Industry từ industryid
+        String industryName = product.getIndustry().getIndustryName();
+        resultBuilder.append("Industry: ").append(industryName).append("\n");
+
+        // Lấy tên của ManufactureAddress từ manufactureaddressid
+        String manufactureAddressName = product.getManufactureaddress().getName();
+        resultBuilder.append("Manufacture Address: ").append(manufactureAddressName).append("\n");
+        return resultBuilder.toString();
+    }
+
     //Return product by id
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
+
+    //Tìm kiếm sản phẩm theo keyword
+    //public List<Product> searchProducts(String keyword) {
+        // Lưu từ khóa tìm kiếm vào bảng keyword
+        //Keyword searchKeyword = new Keyword();
+        //searchKeyword.setKeyword(keyword);
+        //keywordRepository.save(searchKeyword);
+
+
+
+
+
+        public List<Product> searchProducts(String keyword) {
+            Keyword existingKeyword = keywordRepository.findByKeyword(keyword);
+            if (existingKeyword != null) {
+                existingKeyword.setCount(existingKeyword.getCount() + 1);
+                keywordRepository.save(existingKeyword);
+            } else {
+                List<Keyword> similarKeywords = keywordRepository.findAll();
+                boolean isNewKeyword = true;
+
+                for (Keyword similarKeyword : similarKeywords) {
+                    if (isKeywordSimilar(similarKeyword.getKeyword(), keyword)) {
+                        similarKeyword.setCount(similarKeyword.getCount() + 1);
+                        keywordRepository.save(similarKeyword);
+                        isNewKeyword = false;
+                    }
+                }
+
+                if (isNewKeyword) {
+                    Keyword newKeyword = new Keyword();
+                    newKeyword.setKeyword(keyword);
+                    newKeyword.setCount(1L);
+                    keywordRepository.save(newKeyword);
+                }
+            }
+
+            // Thực hiện tìm kiếm sản phẩm
+            return productRepository.findByProductNameContainingIgnoreCaseOrderByProductNameAsc(keyword);
+        }
+
+        private boolean isKeywordSimilar(String keyword1, String keyword2) {
+            // Logic để kiểm tra sự giống nhau và mở rộng từ khóa
+            // Trong ví dụ này, sử dụng toLowerCase() và contains() để kiểm tra
+            return keyword1.toLowerCase().contains(keyword2.toLowerCase());
+        }
+
 
 
 

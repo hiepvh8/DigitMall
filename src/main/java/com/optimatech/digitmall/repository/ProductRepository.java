@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByProductCode(String productCode);
 
+    //Tìm gần đúng product theo keyword
+    List<Product> findByProductNameContainingIgnoreCaseOrderByProductNameAsc(String keyword);
+
     //Lấy ra top 100 sản phẩm có lượng sold cao nhất và có trạng thái ONL
     @Query(value = "SELECT * FROM products WHERE status = 'ONL' ORDER BY sold DESC LIMIT 100", nativeQuery = true)
     List<Product> findTop100OnlineProductsBySold();
