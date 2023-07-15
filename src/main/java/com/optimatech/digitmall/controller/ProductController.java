@@ -8,21 +8,24 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "Products", description = "Các chức năng của products")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    @Autowired
+    private final QualityService qualityService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, QualityService qualityService) {
         this.productService = productService;
+        this.qualityService = qualityService;
     }
 
     @Operation(
@@ -136,6 +139,23 @@ public class ProductController {
         List<Product> products = productService.searchProducts(keyword);
         return ResponseEntity.ok(products);
     }
+
+    @Operation(
+            summary = "getMethod trả về trung bình sao đánh giá của sản phẩm",
+            description = ""
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400",description = "bad request"),
+            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
+            @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
+    })
+    @GetMapping("/{productId}/star")
+    public ResponseEntity<?> getStarProduct(@PathVariable Long productId) {
+        Double star = qualityService.calculateAverageQualityWithProduct(productId);
+        return ResponseEntity.ok(star);
+    }
 //    @GetMapping("/flassale")
 //    public ResponseEntity<List<Product>> getFlassaleProducts(@RequestParam(required = false, defaultValue = "0.3") double disscountPercentage) {
 //        List<Product> products = productService.getFlassaleProducts(disscountPercentage);
@@ -158,6 +178,24 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<? > createProduct(@RequestBody ProductDTO productDTO){
         productService.createProduct(productDTO);
+        return new ResponseEntity<>("Thêm thành công!", HttpStatus.CREATED);
+    }
+
+    @Operation(
+            summary = "client gửi request PostMethod để Đánh giá sao cho nhà bán hàng",
+            description = ""
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400",description = "bad request"),
+            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
+            @ApiResponse(responseCode = "403", description = "Quantity không có quyền (90%) hoặc lỗi tiềm ẩn server")
+    })
+    //Cập nhật đánh giá cho sản phẩm
+    @PostMapping("/{productId}/qualities")
+    public ResponseEntity<?> createQuality(@PathVariable Long productId, @RequestBody Double star) {
+        qualityService.createQuatityByProduct(productId, star);
         return new ResponseEntity<>("Thêm thành công!", HttpStatus.CREATED);
     }
 
