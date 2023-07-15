@@ -46,6 +46,10 @@ public class Product {
     @JsonManagedReference
     private List<Hashtag> hashtags;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Quality> qualities;
+
     @ManyToOne
     @JoinColumn(name = "sellerid", referencedColumnName = "id")
     @JsonBackReference
