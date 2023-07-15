@@ -1,5 +1,6 @@
 package com.optimatech.digitmall.serviceimp;
 
+import com.optimatech.digitmall.exception.NotFoundException;
 import com.optimatech.digitmall.model.dto.IndustryDTO;
 import com.optimatech.digitmall.model.entity.Industry;
 import com.optimatech.digitmall.repository.IndustryRepository;
@@ -30,9 +31,8 @@ public class IndustryServiceImp implements IndustryService {
         if(industry.isPresent()){
             return industry;
         }else {
-            throw new NotFoundE
+            throw new NotFoundException("Danh mục không tồn tại ");
         }
-
     }
 
     //Create danh mục
