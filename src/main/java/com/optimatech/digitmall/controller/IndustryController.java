@@ -24,7 +24,7 @@ public class IndustryController {
 
     @Operation(
             summary = "client gửi request GetMethod để hiển thị danh sách các Danh Mục ",
-            description = "Seller có thể thêm sản phẩm vào sop của mình với from frontend thiết kế "
+            description = " "
     )
 
     @ApiResponses({
@@ -56,4 +56,19 @@ public class IndustryController {
         return ResponseEntity.ok("Thành công!");
     }
 
+    @Operation(
+            summary = "client gửi request GetMethod để hiển thị  Danh Mục ",
+            description = " "
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400",description = "bad request"),
+            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
+            @ApiResponse(responseCode = "403", description = "Industry không có quyền (90%) hoặc lỗi tiềm ẩn server")
+    })
+    @GetMapping("/{industryId}")
+    public ResponseEntity<?> getIndustryById(@PathVariable Long industryId){
+        return  ResponseEntity.ok(industryService.getIndustryById(industryId));
+    }
 }
