@@ -28,7 +28,7 @@ public class Seller {
     @Column(name = "shopname")
     private String shopName;
     private String hotline;
-    private String quality;
+    //private Double quality;
     private String evaluate;
     // chỗ này là chỗ của địa chỉ shop
     // tạm thời trống
@@ -46,5 +46,7 @@ public class Seller {
     @JsonManagedReference
     private List<Product> products;
 
-
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Quality> qualities;
 }

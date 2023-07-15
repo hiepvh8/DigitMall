@@ -1,6 +1,7 @@
 package com.optimatech.digitmall.serviceimp;
 
 import com.optimatech.digitmall.Enum.Business;
+import com.optimatech.digitmall.exception.NotFoundException;
 import com.optimatech.digitmall.model.dto.ProductDTO;
 import com.optimatech.digitmall.model.entity.*;
 import com.optimatech.digitmall.repository.*;
@@ -184,7 +185,12 @@ public class ProductServiceImp implements ProductService {
 
     //Return product by id
     public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent()){
+            return product;
+        }else{
+            throw new NotFoundException("Product không tồn tại trong hệ thống!");
+        }
     }
 
     //Tìm kiếm sản phẩm theo keyword
