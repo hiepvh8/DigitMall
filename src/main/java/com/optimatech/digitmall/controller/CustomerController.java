@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@CrossOrigin("http://localhost:5500")
 @Tag(name = "API cung cấp các tính năng phía người dùng")
 @RequestMapping("/customer")
 public class CustomerController {
