@@ -17,6 +17,7 @@ import java.util.List;
 
 @Tag(name = "Products", description = "Các chức năng của products")
 @RestController
+@CrossOrigin("http://localhost:5500")
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
