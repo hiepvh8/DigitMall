@@ -1,5 +1,7 @@
 package com.optimatech.digitmall.serviceimp;
 
+import com.optimatech.digitmall.exception.NotFoundException;
+import com.optimatech.digitmall.model.dto.IndustryDTO;
 import com.optimatech.digitmall.model.entity.Industry;
 import com.optimatech.digitmall.repository.IndustryRepository;
 import com.optimatech.digitmall.services.IndustryService;
@@ -25,11 +27,18 @@ public class IndustryServiceImp implements IndustryService {
 
     //Return product by id
     public Optional<Industry> getIndustryById(Long id) {
-        return industryRepository.findById(id);
+        Optional<Industry> industry = industryRepository.findById(id);
+        if(industry.isPresent()){
+            return industry;
+        }else {
+            throw new NotFoundException("Danh mục không tồn tại ");
+        }
     }
 
-    //Create product
-    public Industry createIndustry(Industry industry) {
+    //Create danh mục
+    public Industry createIndustry(IndustryDTO industryDTO) {
+        Industry industry = new Industry();
+        industry.setIndustryName(industryDTO.getIndustryName());
         return industryRepository.save(industry);
     }
 

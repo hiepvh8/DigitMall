@@ -18,7 +18,6 @@ import java.util.Optional;
 @Service
 public class AccountServiceImp implements AccountService {
     private final AccountRepository accountRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
 
