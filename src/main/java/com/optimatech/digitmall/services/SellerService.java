@@ -10,4 +10,6 @@ public interface SellerService {
 
     //Return list seller
     public List<Seller> getAllSellers();
+
+    public void createSellerFromCustomer();
 }

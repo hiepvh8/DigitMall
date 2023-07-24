@@ -29,23 +29,23 @@ public class ProductController {
         this.qualityService = qualityService;
     }
 
-    @Operation(
-            summary = "client gửi request GetMethod để trả về danh sách các sản phẩm",
-            description = ""
-    )
-
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400",description = "bad request"),
-            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
-            @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
-    })
+//    @Operation(
+//            summary = "client gửi request GetMethod để trả về danh sách các sản phẩm",
+//            description = ""
+//    )
+//
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "OK"),
+//            @ApiResponse(responseCode = "400",description = "bad request"),
+//            @ApiResponse(responseCode = "500", description = "Lỗi phía server - Thông báo lại với server để fix"),
+//            @ApiResponse(responseCode = "403", description = "Product không có quyền (90%) hoặc lỗi tiềm ẩn server")
+//    })
     //Return list product
-    @GetMapping("")
-    public ResponseEntity<?> gettAllProduct(){
-        List<Product> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
-    }
+//    @GetMapping("")
+//    public ResponseEntity<?> gettAllProduct(){
+//        List<Product> products = productService.getAllProducts();
+//        return ResponseEntity.ok(products);
+//    }
 
     @Operation(
             summary = "client gửi request GetMethod để trả về Sản phẩm theo id để xem thông tin sản phẩm",

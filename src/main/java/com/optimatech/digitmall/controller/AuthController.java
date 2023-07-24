@@ -8,11 +8,8 @@ import com.optimatech.digitmall.respone.Response;
 import com.optimatech.digitmall.respone.Token;
 import com.optimatech.digitmall.security.JwtService;
 import com.optimatech.digitmall.serviceimp.AccountServiceImp;
+import com.optimatech.digitmall.serviceimp.AuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,18 +31,21 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final AccountServiceImp accountService;
+    private final AuthorizationService authorizationService;
 
     public AuthController(AccountRepository accountRepository,
                           JwtService jwtService,
                           AuthenticationManager authenticationManager,
                           PasswordEncoder passwordEncoder,
-                          AccountServiceImp accountService) {
+                          AccountServiceImp accountService,
+                          AuthorizationService authorizationService) {
 
         this.accountRepository = accountRepository;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.accountService = accountService;
+        this.authorizationService = authorizationService;
     }
     //private final EmailService emailService;
 
@@ -85,7 +85,8 @@ public class AuthController {
     @Operation(
             summary = "client gửi request theo form Json bên dưới để đăng nhập và xử dụng token" +
                     " trả về để call các API khác",
-            description = "No problem!"
+            description = "Id trong message là customer ID đang đăng nhập! Dùng nó để call API có" +
+                    " path /{cusid}. Nên lưu vào storage để sử dụng lâu dài!!"
 
     )
 
@@ -105,7 +106,8 @@ public class AuthController {
         Optional<Account> account = accountRepository.findByUsername(accountRequest.getUsername());
         if(account.isPresent()){
             String jwt = jwtService.generateToken(account.get());
-            return new ResponseEntity<>(new Response("Thành công",new Token(jwt),"200",""),
+            return new ResponseEntity<>(new Response("Thành công",new Token(jwt),"200",
+                    authorizationService.getCustomerId()),
                     HttpStatus.valueOf(200));
         }
         return new ResponseEntity<>(new Response("Thất bại",null,"400","Server không bao giờ lỗi \nLỗi do người dùng!OK"),

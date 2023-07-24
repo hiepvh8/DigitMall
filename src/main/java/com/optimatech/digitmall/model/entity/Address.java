@@ -2,6 +2,7 @@ package com.optimatech.digitmall.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.optimatech.digitmall.model.dto.AddressRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,8 @@ public class Address {
     @JoinColumn(name = "customerid", referencedColumnName = "id")
     @JsonBackReference
     private Customer customer;
+
+
 
     public Address(AddressRequest addressRequest){
         this.country = addressRequest.getCountry();

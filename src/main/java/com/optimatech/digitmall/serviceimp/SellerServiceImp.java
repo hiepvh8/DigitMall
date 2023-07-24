@@ -33,4 +33,9 @@ public class SellerServiceImp implements SellerService {
         return sellerRepository.findAll();
     }
 
+    @Override
+    public void createSellerFromCustomer() {
+
+    }
+
 }
