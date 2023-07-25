@@ -1,6 +1,7 @@
 package com.optimatech.digitmall.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "seller")
 public class Seller {
     @Id
@@ -30,7 +30,9 @@ public class Seller {
     private String hotline;
     //private Double quality;
     private String evaluate;
-    // chỗ này là chỗ của địa chỉ shop
+    @OneToOne(mappedBy = "seller", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Address address;
     // tạm thời trống
 
     @OneToOne
@@ -49,4 +51,10 @@ public class Seller {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Quality> qualities;
+    public Seller(){
+        this.backGroundImg = "https://res.cloudinary.com/dxlgrtrvr/image/upload/v1690216078/mau-anh-bia-facebook-cua-uplevo-4_eqxj71.jpg";
+        this.logo = "https://res.cloudinary.com/dxlgrtrvr/image/upload/v1690216068/unnamed_kohoso.png";
+        this.shopName = "DigitMall-Tech";
+        this.evaluate = "0";
+    }
 }

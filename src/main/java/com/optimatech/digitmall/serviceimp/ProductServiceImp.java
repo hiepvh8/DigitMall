@@ -3,6 +3,7 @@ package com.optimatech.digitmall.serviceimp;
 import com.optimatech.digitmall.Enum.Business;
 import com.optimatech.digitmall.exception.NotFoundException;
 import com.optimatech.digitmall.model.dto.ProductDTO;
+import com.optimatech.digitmall.model.dto.ProductResponse;
 import com.optimatech.digitmall.model.entity.*;
 import com.optimatech.digitmall.repository.*;
 import com.optimatech.digitmall.services.*;
@@ -129,8 +130,14 @@ public class ProductServiceImp implements ProductService {
 
     //R
     //Return list product
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+
+        List<Product> products = productRepository.findAll();
+        List<ProductResponse> responses = new ArrayList<>();
+        for(Product p : products){
+            responses.add(new ProductResponse(p));
+        }
+        return responses;
     }
 
     //Lấy ra top 100 sản phẩm có lượng sold cao nhất và có trạng thái ONL

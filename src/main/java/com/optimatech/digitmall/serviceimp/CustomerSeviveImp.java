@@ -3,13 +3,11 @@ package com.optimatech.digitmall.serviceimp;
 import com.optimatech.digitmall.model.dto.AddressRequest;
 import com.optimatech.digitmall.model.dto.CustomerInforRequest;
 import com.optimatech.digitmall.model.dto.CustomerResponse;
-import com.optimatech.digitmall.model.entity.Account;
-import com.optimatech.digitmall.model.entity.Address;
-import com.optimatech.digitmall.model.entity.Cart;
-import com.optimatech.digitmall.model.entity.Customer;
+import com.optimatech.digitmall.model.entity.*;
 import com.optimatech.digitmall.repository.AddressRepository;
 import com.optimatech.digitmall.repository.CartRepository;
 import com.optimatech.digitmall.repository.CustomerRepository;
+import com.optimatech.digitmall.repository.SellerRepository;
 import com.optimatech.digitmall.services.CustomerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,15 +24,17 @@ public class CustomerSeviveImp implements CustomerService {
     private final ImageServiceImp imageServiceImp;
     private final CartRepository cartRepository;
     private final AddressRepository addressRepository;
-
+    private final SellerRepository sellerRepository;
     public CustomerSeviveImp(CustomerRepository customerRepository,
                              ImageServiceImp imageServiceImp,
                              CartRepository cartRepository,
-                             AddressRepository addressRepository) {
+                             AddressRepository addressRepository,
+                             SellerRepository sellerRepository) {
         this.customerRepository = customerRepository;
         this.imageServiceImp = imageServiceImp;
         this.cartRepository = cartRepository;
         this.addressRepository = addressRepository;
+        this.sellerRepository = sellerRepository;
     }
 
     public boolean updateInfor(CustomerInforRequest customerInforRequest, Long cusid){
@@ -84,12 +84,13 @@ public class CustomerSeviveImp implements CustomerService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Account accountPrincipal = (Account) authentication.getPrincipal();
         Long cusid = accountPrincipal.getCustomer().getId();
-        if(accountPrincipal.getCustomer().getCart().equals("")){
+        if(accountPrincipal.getCustomer().getStatusCart().equals(false)){
             Cart cart = new Cart();
             cartRepository.save(cart);
             Optional<Customer> customer = customerRepository.findById(cusid);
             if(customer.isPresent()){
                 customer.get().setCart(cart);
+                customer.get().setStatusCart(true);
                 customerRepository.save(customer.get());
                 return true;
             }
@@ -118,6 +119,43 @@ public class CustomerSeviveImp implements CustomerService {
         }
 
 
+    }
+
+
+    // tương tự như addCart
+    public Boolean createSellerFromCustomer(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Account accountPrincipal = (Account) authentication.getPrincipal();
+        Long cusid = accountPrincipal.getCustomer().getId();
+        if(accountPrincipal.getCustomer().getStatusSeller().equals(false)){ // giới hạn call 1 lần / 1 cus
+            Seller newSeller = new Seller();
+            Optional<Customer> customer = customerRepository.findById(cusid);
+            if(customer.isPresent()){
+                customer.get().setSeller(newSeller);
+                customer.get().setStatusSeller(true); // set là tự lưu xuống db rồi
+                //customerRepository.save(customer.get());
+                newSeller.setCustomer(customer.get());
+                sellerRepository.save(newSeller);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // func lấy id của người đăng nhập
+//    public Long getCustomerIdByToken(){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Account accountPrincipal = (Account) authentication.getPrincipal();
+//        Long cusid = accountPrincipal.getCustomer().getId();
+//        return cusid;
+//    }
+    // chuyển từ cusid sang seller id
+    public Long translateCusidToSellerId(Long cusid){
+        Optional<Customer> customer = customerRepository.findById(cusid);
+        if(customer.isPresent()){
+            return customer.get().getSeller().getId(); // cần bắt lỗi ngoại lệ seller null ở đây
+        }
+        return -1L; // ngoại lệ
     }
 }
 

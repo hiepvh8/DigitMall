@@ -2,6 +2,7 @@ package com.optimatech.digitmall.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.optimatech.digitmall.model.dto.AddressRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,10 @@ public class Address {
     @JsonBackReference
     private Customer customer;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sellerid", referencedColumnName = "id")
+    @JsonManagedReference
+    private Seller seller;
     public Address(AddressRequest addressRequest){
         this.country = addressRequest.getCountry();
         this.district = addressRequest.getDistrict();

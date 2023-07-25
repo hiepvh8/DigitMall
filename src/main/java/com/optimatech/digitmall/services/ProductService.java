@@ -2,6 +2,7 @@ package com.optimatech.digitmall.services;
 
 import com.optimatech.digitmall.Enum.Business;
 import com.optimatech.digitmall.model.dto.ProductDTO;
+import com.optimatech.digitmall.model.dto.ProductResponse;
 import com.optimatech.digitmall.model.entity.Product;
 import org.springframework.http.ResponseEntity;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 public interface ProductService {
 
     //R
-    public List<Product> getAllProducts();
+    public List<ProductResponse> getAllProducts();
     public List<Product> getTopSoldProducts();
 //    public List<Product> getFlassaleProducts(double discountPercentage);
 
