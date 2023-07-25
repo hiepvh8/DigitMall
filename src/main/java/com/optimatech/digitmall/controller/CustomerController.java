@@ -67,13 +67,15 @@ public class CustomerController {
             " thường thôi ko có vấn đề gì đặc biệt cả!")
     @PutMapping("/{cusid}/avatar/update")
     @CrossOrigin("http://localhost:5500")
-    public ResponseEntity<?> updateAvatar(@PathVariable("cusid") Long cusid, @RequestParam("url") String url){
-        if(authorizationService.checkAuthor(cusid)) {
-            customerSeviveImp.updateAvatar(cusid,url);
-            return new ResponseEntity<>(new Response("Thành Công",url,"200",""),
+    public ResponseEntity<?> updateAvatar(@PathVariable("cusid") Long cusid, @RequestParam("url") String url) {
+        if (authorizationService.checkAuthor(cusid)) {
+            customerSeviveImp.updateAvatar(cusid, url);
+            return new ResponseEntity<>(new Response("Thành Công", url, "200", ""),
                     HttpStatusCode.valueOf(200));
         }
-        return new ResponseEntity<>(new Response("Thất bại",url,"403","User không có quyền"),
+        return new ResponseEntity<>(new Response("Thất bại", url, "403", "User không có quyền"),
+                HttpStatusCode.valueOf(200));
+    }
     @Operation(summary = "Hãy tạo cho mình 1 giỏ hàng để bắt đầu mua sắp!",
             description = "Mỗi 1 customer chỉ được phép tạo tối đa 1 giỏ hàng. API này chỉ được call 1 lần duy" +
                     " nhất với mỗi new customer")
