@@ -91,15 +91,15 @@ public class CustomerController {
     }
 
 
-    @Operation(summary = "Thêm mới địa chỉ nhận hàng")
-    @PostMapping("/{cusid}/creat-address")
-    @CrossOrigin("http://localhost:5500")
-    public ResponseEntity<?> createAddress(@PathVariable("cusid") Long cusid,
-                                           @RequestBody AddressRequest addressRequest){
-        if(authorizationService.checkAuthor(cusid))
-            customerSeviveImp.createAddress(cusid,addressRequest);
-        return new ResponseEntity<>("Thành Công", HttpStatusCode.valueOf(200));
-    }
+//    @Operation(summary = "Thêm mới địa chỉ nhận hàng")
+//    @PostMapping("/{cusid}/creat-address")
+//    @CrossOrigin("http://localhost:5500")
+//    public ResponseEntity<?> createAddress(@PathVariable("cusid") Long cusid,
+//                                           @RequestBody AddressRequest addressRequest){
+//        if(authorizationService.checkAuthor(cusid))
+//            customerSeviveImp.createAddress(cusid,addressRequest);
+//        return new ResponseEntity<>("Thành Công", HttpStatusCode.valueOf(200));
+//    }
 
     @Operation(summary = "Tạo kênh người bán từ một người dùng bình thường",
     description = "Sau khi tạo xong, seller Id sẽ được gửi lên thông qua data response." +
