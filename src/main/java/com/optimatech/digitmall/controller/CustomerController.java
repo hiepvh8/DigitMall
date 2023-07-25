@@ -62,6 +62,7 @@ public class CustomerController {
                 HttpStatusCode.valueOf(200));
     }
 
+
     @Operation(summary = "Đây là API lưu ảnh avatar xuống database nè", description = "Cứ call bình" +
             " thường thôi ko có vấn đề gì đặc biệt cả!")
     @PutMapping("/{cusid}/avatar/update")
@@ -73,10 +74,6 @@ public class CustomerController {
                     HttpStatusCode.valueOf(200));
         }
         return new ResponseEntity<>(new Response("Thất bại",url,"403","User không có quyền"),
-                HttpStatusCode.valueOf(200));
-    }
-
-
     @Operation(summary = "Hãy tạo cho mình 1 giỏ hàng để bắt đầu mua sắp!",
             description = "Mỗi 1 customer chỉ được phép tạo tối đa 1 giỏ hàng. API này chỉ được call 1 lần duy" +
                     " nhất với mỗi new customer")
@@ -87,7 +84,6 @@ public class CustomerController {
                                         // tuy hơi vi phạm SOLID nhưng thôi kệ !!
             return new ResponseEntity<>(new Response("Thành Công","","200",""),
                     HttpStatusCode.valueOf(200));
-
         return new ResponseEntity<>(new Response("Thất bại",null,"400","Customer này" +
                 " đã có giỏ hàng rồi!"), HttpStatusCode.valueOf(200));
     }

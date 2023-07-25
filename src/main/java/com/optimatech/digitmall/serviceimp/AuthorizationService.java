@@ -18,6 +18,7 @@ public class AuthorizationService {
 
         else return false;
     }
+
     public Long getCustomerId(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Account accountPrincipal = (Account) authentication.getPrincipal();

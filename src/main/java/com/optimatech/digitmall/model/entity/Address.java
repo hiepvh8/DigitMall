@@ -36,9 +36,6 @@ public class Address {
     @JoinColumn(name = "sellerid", referencedColumnName = "id")
     @JsonManagedReference
     private Seller seller;
-
-
-
     public Address(AddressRequest addressRequest){
         this.country = addressRequest.getCountry();
         this.district = addressRequest.getDistrict();

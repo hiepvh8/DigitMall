@@ -25,7 +25,6 @@ public class CustomerSeviveImp implements CustomerService {
     private final CartRepository cartRepository;
     private final AddressRepository addressRepository;
     private final SellerRepository sellerRepository;
-
     public CustomerSeviveImp(CustomerRepository customerRepository,
                              ImageServiceImp imageServiceImp,
                              CartRepository cartRepository,
@@ -122,6 +121,7 @@ public class CustomerSeviveImp implements CustomerService {
 
     }
 
+
     // tương tự như addCart
     public Boolean createSellerFromCustomer(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -157,7 +157,6 @@ public class CustomerSeviveImp implements CustomerService {
         }
         return -1L; // ngoại lệ
     }
-
 }
 
 
