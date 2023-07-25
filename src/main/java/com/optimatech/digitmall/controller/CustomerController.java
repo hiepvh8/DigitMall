@@ -48,7 +48,7 @@ public class CustomerController {
         if(authorizationService.checkAuthor(cusid) && customerSeviveImp.updateInfor(customerInforRequest,cusid))
             return new ResponseEntity<>(new Response("Thành Công","", "201",""),
                     HttpStatusCode.valueOf(200));
-        return new ResponseEntity<>(new Response("Thất bại",null, "", "Kiểm tra lại format dữ liệu!"),
+        return new ResponseEntity<>(new Response("Thất bại",null, "", "Kiểm tra lại format dữ liệu! hoặc không có quyền"),
                 HttpStatusCode.valueOf(200));
     }
 
@@ -117,26 +117,26 @@ public class CustomerController {
                 HttpStatusCode.valueOf(200));
     }
 
-    @GetMapping("/how-to-custid")
+    @GetMapping("/how-to-cusid")
     @Operation(summary = "Không tìm thấy cusid trong store thì call api này!",
     description = "cusid ở trong data kìa!")
     @CrossOrigin("http://localhost:5500")
     public ResponseEntity<?> getCustomerIdNow() {
-        return new ResponseEntity<>(new Response("Thành công", customerSeviveImp.getCustomerIdByToken(),
+        return new ResponseEntity<>(new Response("Thành công", authorizationService.getCustomerId(),
                 "200", ""), HttpStatusCode.valueOf(200));
     }
 
 
     @GetMapping("/{cusid}/how-to-sellerid")
     @Operation(summary = "API này mapping cusid với sellerid",
-    description = "Nếu không thể chuyển đổi sẽ trả về -1")
+    description = "Nếu không thể chuyển đổi sẽ trả về -1. Trường hợp customer chưa khởi tạo seller mà call thì sẽ báo lỗi 403")
     @CrossOrigin("http://localhost:5500")
     public ResponseEntity<?> converstID(@PathVariable("cusid") Long cusid){
         if(customerSeviveImp.translateCusidToSellerId(cusid) == -1)
-            return new ResponseEntity<>(new Response("Thất bại", customerSeviveImp.getCustomerIdByToken(),
+            return new ResponseEntity<>(new Response("Thất bại", customerSeviveImp.translateCusidToSellerId(cusid),
                     "400", "Không thể chuyển đổi! Có thế là do customer chưa tạo kênh người bán" +
                     " hoặc cusid không hợp lệ"), HttpStatusCode.valueOf(200));
-        return new ResponseEntity<>(new Response("Thành công", customerSeviveImp.getCustomerIdByToken(),
+        return new ResponseEntity<>(new Response("Thành công", customerSeviveImp.translateCusidToSellerId(cusid),
                 "200", ""), HttpStatusCode.valueOf(200));
     }
 

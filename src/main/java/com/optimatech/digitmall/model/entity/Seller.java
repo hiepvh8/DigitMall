@@ -30,7 +30,8 @@ public class Seller {
     private String hotline;
     //private Double quality;
     private String evaluate;
-
+    @OneToOne(mappedBy = "seller", cascade = CascadeType.ALL)
+    @JsonBackReference
     private Address address;
     // tạm thời trống
 
@@ -53,7 +54,7 @@ public class Seller {
     public Seller(){
         this.backGroundImg = "https://res.cloudinary.com/dxlgrtrvr/image/upload/v1690216078/mau-anh-bia-facebook-cua-uplevo-4_eqxj71.jpg";
         this.logo = "https://res.cloudinary.com/dxlgrtrvr/image/upload/v1690216068/unnamed_kohoso.png";
-        this.shopName = "DigitMall-Tech " + this.getId();
+        this.shopName = "DigitMall-Tech";
         this.evaluate = "0";
     }
 }

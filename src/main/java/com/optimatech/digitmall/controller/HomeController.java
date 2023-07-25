@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Tag(name = "Home", description = "trang chủ và các API điều hướng đi page khác ngoài internet")
-@RequestMapping("/digitmaill")
+@RequestMapping("/digitmall")
 public class HomeController {
     private final ProductServiceImp productServiceImp;
 

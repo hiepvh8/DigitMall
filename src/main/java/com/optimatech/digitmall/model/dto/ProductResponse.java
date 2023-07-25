@@ -39,6 +39,6 @@ public class ProductResponse {
         this.disscount = product.getDisscount();
         this.quantity = product.getQuantity();
         this.sold = product.getSold(); // số lượng đã bán
-        this.location = product.getSeller().getAddress().getCountry();
+        //this.location = product.getSeller().getAddress().getCountry();
     }
 }

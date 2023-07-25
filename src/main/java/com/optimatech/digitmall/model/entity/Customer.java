@@ -37,6 +37,10 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private Rankk rankk;
     private String coin;
+    @Column(name = "statuscart")
+    private Boolean statusCart;
+    @Column(name = "statusseller")
+    private Boolean statusSeller;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accoutid", referencedColumnName = "id")
@@ -72,6 +76,8 @@ public class Customer {
         this.lastname = "New Customer";
         this.coin = "50000";
         this.rankk = Rankk.BRONZE;
+        this.statusCart = false;
+        this.statusSeller = false;
     }
 
 }

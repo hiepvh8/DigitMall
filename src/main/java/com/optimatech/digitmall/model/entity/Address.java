@@ -32,6 +32,11 @@ public class Address {
     @JsonBackReference
     private Customer customer;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sellerid", referencedColumnName = "id")
+    @JsonManagedReference
+    private Seller seller;
+
 
 
     public Address(AddressRequest addressRequest){

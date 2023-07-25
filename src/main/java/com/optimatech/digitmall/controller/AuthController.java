@@ -107,7 +107,7 @@ public class AuthController {
         if(account.isPresent()){
             String jwt = jwtService.generateToken(account.get());
             return new ResponseEntity<>(new Response("Thành công",new Token(jwt),"200",
-                    authorizationService.getCustomerId()),
+                    ""),
                     HttpStatus.valueOf(200));
         }
         return new ResponseEntity<>(new Response("Thất bại",null,"400","Server không bao giờ lỗi \nLỗi do người dùng!OK"),

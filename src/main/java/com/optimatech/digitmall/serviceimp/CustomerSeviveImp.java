@@ -85,12 +85,13 @@ public class CustomerSeviveImp implements CustomerService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Account accountPrincipal = (Account) authentication.getPrincipal();
         Long cusid = accountPrincipal.getCustomer().getId();
-        if(accountPrincipal.getCustomer().getCart().equals("")){
+        if(accountPrincipal.getCustomer().getStatusCart().equals(false)){
             Cart cart = new Cart();
             cartRepository.save(cart);
             Optional<Customer> customer = customerRepository.findById(cusid);
             if(customer.isPresent()){
                 customer.get().setCart(cart);
+                customer.get().setStatusCart(true);
                 customerRepository.save(customer.get());
                 return true;
             }
@@ -126,13 +127,15 @@ public class CustomerSeviveImp implements CustomerService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Account accountPrincipal = (Account) authentication.getPrincipal();
         Long cusid = accountPrincipal.getCustomer().getId();
-        if(accountPrincipal.getCustomer().getSeller().equals("")){
+        if(accountPrincipal.getCustomer().getStatusSeller().equals(false)){ // giới hạn call 1 lần / 1 cus
             Seller newSeller = new Seller();
-            sellerRepository.save(newSeller);
             Optional<Customer> customer = customerRepository.findById(cusid);
             if(customer.isPresent()){
                 customer.get().setSeller(newSeller);
-                customerRepository.save(customer.get());
+                customer.get().setStatusSeller(true); // set là tự lưu xuống db rồi
+                //customerRepository.save(customer.get());
+                newSeller.setCustomer(customer.get());
+                sellerRepository.save(newSeller);
                 return true;
             }
         }
@@ -140,18 +143,17 @@ public class CustomerSeviveImp implements CustomerService {
     }
 
     // func lấy id của người đăng nhập
-    public Long getCustomerIdByToken(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Account accountPrincipal = (Account) authentication.getPrincipal();
-        Long cusid = accountPrincipal.getCustomer().getId();
-        return cusid;
-    }
-
+//    public Long getCustomerIdByToken(){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Account accountPrincipal = (Account) authentication.getPrincipal();
+//        Long cusid = accountPrincipal.getCustomer().getId();
+//        return cusid;
+//    }
     // chuyển từ cusid sang seller id
     public Long translateCusidToSellerId(Long cusid){
         Optional<Customer> customer = customerRepository.findById(cusid);
         if(customer.isPresent()){
-            return customer.get().getSeller().getId();
+            return customer.get().getSeller().getId(); // cần bắt lỗi ngoại lệ seller null ở đây
         }
         return -1L; // ngoại lệ
     }
